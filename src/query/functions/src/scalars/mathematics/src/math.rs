@@ -20,6 +20,7 @@ use std::marker::PhantomData;
 use databend_common_base::base::OrderedFloat;
 use databend_common_expression::types::number::SimpleDomain;
 use databend_common_expression::types::number::F64;
+use databend_common_expression::types::BooleanType;
 use databend_common_expression::types::NumberDataType;
 use databend_common_expression::types::NumberType;
 use databend_common_expression::types::StringType;
@@ -405,6 +406,21 @@ pub fn register(registry: &mut FunctionRegistry) {
             }
         })
     }
+
+    registry.register_1_arg::<NumberType<F64>, BooleanType, _, _>(
+        "isnan",
+        |_, _| FunctionDomain::Full,
+        |val, _| val.is_nan(),
+    );
+
+    registry.register_1_arg::<NumberType<F64>, BooleanType, _, _>(
+        "isinf",
+        |_, _| FunctionDomain::Full,
+        |val, _| val.is_infinite(),
+    );
+
+    registry.register_aliases("isnan", &["is_nan"]);
+    registry.register_aliases("isinf", &["is_inf"]);
 }
 
 /// Const f64 is now allowed.

@@ -450,3 +450,28 @@ query T
 SELECT TRUNC(150.45,-2);
 ----
 100
+
+query B
+SELECT ISNAN(0);
+----
+0
+
+query B
+SELECT ISNAN('NaN'::float);
+----
+1
+
+query B
+SELECT ISINF(0);
+----
+0
+
+query B
+SELECT ISINF('inf'::float);
+----
+1
+
+query B
+SELECT ISINF('-inf'::float);
+----
+1

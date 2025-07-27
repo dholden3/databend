@@ -36,6 +36,8 @@ fn test_math() {
     test_truncate(file);
     test_log_function(file);
     test_factorial(file);
+    test_isnan(file);
+    test_isinf(file);
 }
 
 fn test_abs(file: &mut impl Write) {
@@ -159,5 +161,21 @@ fn test_log_function(file: &mut impl Write) {
     run_ast(file, "round(2, a)", &[(
         "a",
         Int64Type::from_data(vec![22i64, 65536, 10]),
+    )]);
+}
+
+fn test_isnan(file: &mut impl Write) {
+    run_ast(file, "isnan(1)", &[]);
+    run_ast(file, "isnan(a)", &[(
+        "a",
+        Float64Type::from_data(vec![0.0f64, f64::INFINITY, f64::NEG_INFINITY, f64::NAN]),
+    )]);
+}
+
+fn test_isinf(file: &mut impl Write) {
+    run_ast(file, "isinf(2)", &[]);
+    run_ast(file, "isinf(a)", &[(
+        "a",
+        Float64Type::from_data(vec![0.0f64, f64::INFINITY, f64::NEG_INFINITY, f64::NAN]),
     )]);
 }

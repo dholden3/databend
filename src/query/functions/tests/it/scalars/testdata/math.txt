@@ -600,3 +600,65 @@ evaluation (internal):
 +--------+---------------------------------------+
 
 
+ast            : isnan(1)
+raw expr       : isnan(1)
+checked expr   : isnan<Float64>(1_f64)
+optimized expr : false
+output type    : Boolean
+output domain  : {FALSE}
+output         : false
+
+
+ast            : isnan(a)
+raw expr       : isnan(a::Float64)
+checked expr   : isnan<Float64>(a)
+evaluation     :
++--------+--------------+---------------+
+|        | a            | Output        |
++--------+--------------+---------------+
+| Type   | Float64      | Boolean       |
+| Domain | {-inf..=NaN} | {FALSE, TRUE} |
+| Row 0  | 0            | false         |
+| Row 1  | -inf         | false         |
+| Row 2  | inf          | false         |
+| Row 3  | NaN          | true          |
++--------+--------------+---------------+
+evaluation (internal):
++--------+----------------------------------------------------+
+| Column | Data                                               |
++--------+----------------------------------------------------+
+| a      | Float64([1, -inf, inf, NaN])                       |
+| Output | Boolean([0b____0001])                              |
++--------+----------------------------------------------------+
+
+
+ast            : isinf(2)
+raw expr       : isinf(2)
+checked expr   : isinf<Float64>(2_f64)
+optimized expr : false
+output type    : Boolean
+output domain  : {FALSE}
+output         : false
+
+
+ast            : isinf(a)
+raw expr       : isinf(a::Float64)
+checked expr   : isinf<Float64>(a)
+evaluation     :
++--------+--------------+---------------+
+|        | a            | Output        |
++--------+--------------+---------------+
+| Type   | Float64      | Boolean       |
+| Domain | {-inf..=NaN} | {FALSE, TRUE} |
+| Row 0  | 0            | false         |
+| Row 1  | -inf         | true          |
+| Row 2  | inf          | true          |
+| Row 3  | NaN          | false         |
++--------+--------------+---------------+
+evaluation (internal):
++--------+----------------------------------------------------+
+| Column | Data                                               |
++--------+----------------------------------------------------+
+| a      | Float64([1, -inf, inf, NaN])                       |
+| Output | Boolean([0b____0110])                              |
++--------+----------------------------------------------------+
